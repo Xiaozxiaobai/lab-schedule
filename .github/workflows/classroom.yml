@@ -1,0 +1,32 @@
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  grade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git gcc-riscv64-unknown-elf qemu-system-misc
+
+      - name: Setup Rust nightly
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Install llvm-tools & cargo-binutils
+        run: |
+          rustup component add --toolchain nightly llvm-tools || rustup component add --toolchain nightly llvm-tools-preview
+          cargo install cargo-binutils
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+
+      - name: Run grading
+        run: make grade
