@@ -8,8 +8,8 @@ LD = riscv64-unknown-elf-ld
 OBJCOPY = riscv64-unknown-elf-objcopy
 OBJDUMP = riscv64-unknown-elf-objdump
 
-CFLAGS += -Wno-error=infinite-recursion
 CFLAGS = -Wall -Werror -O -fno-omit-frame-pointer -ggdb
+CFLAGS += -Wno-infinite-recursion
 CFLAGS += -MD
 CFLAGS += -mcmodel=medany
 CFLAGS += -ffreestanding -fno-common -nostdlib -mno-relax
